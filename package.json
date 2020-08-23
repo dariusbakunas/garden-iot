@@ -9,7 +9,8 @@
     "build:server": "tsc --project ./tsconfig.json",
     "build:client": "cd client && yarn build && cp -R ./build/ ../build-server/client && rm -rf ./build",
     "start:client": "cd client && yarn start",
-    "start": "node --max-http-header-size=80000 build-server/index.js"
+    "start": "node --max-http-header-size=80000 build-server/index.js",
+    "postinstall": "cd client && yarn"
   },
   "repository": {
     "type": "git",
