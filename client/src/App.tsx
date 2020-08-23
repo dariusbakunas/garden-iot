@@ -1,9 +1,10 @@
 import React from 'react';
+import { Camera } from './components/Camera/Camera';
 
 function App() {
   return (
     <div className="App">
-      APP
+      <Camera />
     </div>
   );
 }

@@ -10,8 +10,12 @@
     "isolatedModules": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "*" : ["./server/@types/*"]
+    },
     "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types", "./server/@types"]
   },
   "include": ["./server"],
   "exclude": ["./server/**/*.test.ts"]
