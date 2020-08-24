@@ -19,7 +19,11 @@ export const IOProvider: React.FC = ({ children }) => {
     setPumpOn(payload.status === 1);
   });
 
-  socket.on("distance", (payload: string) => {
+  socket.on("distance1", (payload: string) => {
+    console.log(payload);
+  });
+
+  socket.on("distance2", (payload: string) => {
     console.log(payload);
   });
 

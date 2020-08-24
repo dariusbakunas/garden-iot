@@ -13,11 +13,13 @@ rpio.open(PUMP_PIN, rpio.OUTPUT, rpio.LOW);
 
 const server = express();
 
-const getDistance = (callback: (distance: number) => void) => {
+const getDistance = (callback: (distance1: number, distance2: number) => void) => {
   const python = spawn('python', ['measure.py']);
   python.stdout.on('data', function (data) {
-    const distance = Number.parseFloat(data);
-    callback(Math.round(distance * 100) / 100);
+    const [output1, output2] = data.split(":");
+    const distance1 = Number.parseFloat(output1);
+    const distance2 = Number.parseFloat(output2);
+    callback(Math.round(distance1 * 100) / 100, Math.round(distance2 * 100) / 100);
   });
 };
 
@@ -48,9 +50,9 @@ const expressSrv = server.listen(SERVER_PORT, (err) => {
 const io = new SocketIO(expressSrv, { origins: ["*:*"]});
 
 setInterval(() => {
-  getDistance((distance: number) => {
-    console.log(distance);
-    io.emit("distance", distance);
+  getDistance((distance1: number, distance2: number) => {
+    io.emit("distance1", distance1);
+    io.emit("distance2", distance2);
   });
 }, 5000);
 

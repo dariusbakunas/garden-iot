@@ -1,8 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BOARD)
-
 TRIG_1 = 16
 ECHO_1 = 18
 
@@ -34,6 +32,7 @@ def measure_hc(trigPin, echoPin):
     return distance
 
 def main():
+    GPIO.setmode(GPIO.BOARD)
     distance1 = measure_hc(TRIG_1, ECHO_1)
     distance2 = measure_hc(TRIG_2, ECHO_2)
     print("%.2f:%.2f" % (distance1, distance2))
