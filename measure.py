@@ -32,7 +32,7 @@ def measure_hc(trigPin, echoPin):
 
 def main():
     distance1 = measure_hc(TRIG_1, ECHO_1)
-    print("%f".format(distance1))
+    print("%.2f" % (distance1))
 
 if __name__ == "__main__":
     main()
