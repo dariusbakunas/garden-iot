@@ -6,6 +6,9 @@ GPIO.setmode(GPIO.BOARD)
 TRIG_1 = 16
 ECHO_1 = 18
 
+TRIG_2 = 13
+ECHO_2 = 15
+
 def measure_hc(trigPin, echoPin):
     GPIO.setup(trigPin, GPIO.OUT)
     GPIO.setup(echoPin, GPIO.IN)
@@ -32,7 +35,8 @@ def measure_hc(trigPin, echoPin):
 
 def main():
     distance1 = measure_hc(TRIG_1, ECHO_1)
-    print("%.2f" % (distance1))
+    distance2 = measure_hc(TRIG_2, ECHO_2)
+    print("%.2f:%.2f" % (distance1, distance2))
 
 if __name__ == "__main__":
     main()
