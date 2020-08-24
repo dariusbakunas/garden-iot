@@ -151,6 +151,13 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
+"@types/rpio@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@types/rpio/-/rpio-0.0.3.tgz#66a728959a2743f458ace66450b1831c02f4dd55"
+  integrity sha512-zHXqQeNHp/RcERC5dHzjHjmiM71B41HGqYX518XTf2ttRu4v/BXiP60WhuVbAHsGicG6IfL/z4joVl0zHh+Qeg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/serve-static@*":
   version "1.13.5"
   resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.5.tgz#3d25d941a18415d3ab092def846e135a08bbcf53"
