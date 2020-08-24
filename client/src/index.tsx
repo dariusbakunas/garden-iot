@@ -4,10 +4,13 @@ import './App.scss';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { IOProvider } from './context/io';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <IOProvider>
+      <App />
+    </IOProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
