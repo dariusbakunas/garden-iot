@@ -19,6 +19,10 @@ export const IOProvider: React.FC = ({ children }) => {
     setPumpOn(payload.status === 1);
   });
 
+  socket.on("distance", (payload: string) => {
+    console.log(payload);
+  });
+
   const turnPumpOn = useCallback(() => {
     socket.emit("turn-pump-on");
   }, []);
