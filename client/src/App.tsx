@@ -4,8 +4,7 @@ import { Tile, Toggle, ToggleProps } from 'carbon-components-react';
 import { useIOContext } from './context/useIo';
 
 function App() {
-  const [pumpOn, setPumpOn] = useState();
-  const { turnPumpOff, turnPumpOn } = useIOContext();
+  const { turnPumpOff, turnPumpOn, pumpOn } = useIOContext();
 
   const handleTogglePump = (checked: boolean, id: string, event: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLInputElement>) => {
     if (checked) {
@@ -22,7 +21,7 @@ function App() {
           <Camera />
         </div>
         <div className="bx--col">
-          <Toggle id="pump-toggle" toggled={pumpOn} onToggle={handleTogglePump} labelText="Water Pump"/>
+          <Toggle id="pump-toggle" checked={pumpOn} onToggle={handleTogglePump} labelText="Water Pump"/>
         </div>
       </div>
     </div>

@@ -8,13 +8,16 @@ import rpio from 'rpio';
 const SERVER_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const PUMP_PIN = 11;
 
+rpio.open(PUMP_PIN, rpio.OUTPUT, rpio.LOW);
+
 const server = express();
 
 server.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self", 'http://localhost:3000'],
-      connectSrc: ["'self'", 'http://localhost:3000'],
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "http://localhost:8081"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"]
     }
   }
 }));
@@ -38,14 +41,17 @@ const io = new SocketIO(expressSrv, { origins: ["*:*"]});
 io.on('connection', (socket) => {
   console.log('socket.io client connected');
 
+  const currentStatus = rpio.read(PUMP_PIN);
+  socket.emit("pump-status", { status: currentStatus });
+
   socket.on('turn-pump-on', () => {
-    console.log('TURN ON');
     rpio.write(PUMP_PIN, rpio.HIGH);
+    socket.emit("pump-status", { status: rpio.read(PUMP_PIN) });
   });
 
   socket.on('turn-pump-off', () => {
-    console.log('TURN OFF');
     rpio.write(PUMP_PIN, rpio.LOW);
+    socket.emit("pump-status", { status: rpio.read(PUMP_PIN) });
   });
 
   socket.on('disconnect', () => {
