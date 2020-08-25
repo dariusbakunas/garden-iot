@@ -5,6 +5,8 @@ export interface IIOContext {
   turnPumpOn: () => void;
   turnPumpOff: () => void;
   pumpOn: boolean;
+  gardenLevel: number;
+  reservoirLevel: number;
 }
 
 const socket = io("http://localhost:3001", { forceNew: true });
@@ -14,17 +16,19 @@ const { Provider } = IOContext;
 
 export const IOProvider: React.FC = ({ children }) => {
   const [pumpOn, setPumpOn] = useState(false);
+  const [gardenLevel, setGardenLevel] = useState<number>(0);
+  const [reservoirLevel, setReservoirLevel] = useState<number>(0);
 
   socket.on("pump-status", (payload: { status: 1 | 0 }) => {
     setPumpOn(payload.status === 1);
   });
 
-  socket.on("distance1", (payload: string) => {
-    console.log(payload);
+  socket.on("garden-level", (payload: string) => {
+    setGardenLevel(Number.parseFloat(payload));
   });
 
-  socket.on("distance2", (payload: string) => {
-    console.log(payload);
+  socket.on("reservoir-level", (payload: string) => {
+    setReservoirLevel(Number.parseFloat(payload));
   });
 
   const turnPumpOn = useCallback(() => {
@@ -36,7 +40,7 @@ export const IOProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <Provider value={{ turnPumpOn, turnPumpOff, pumpOn }}>
+    <Provider value={{ turnPumpOn, turnPumpOff, pumpOn, gardenLevel, reservoirLevel }}>
       {children}
     </Provider>
   )

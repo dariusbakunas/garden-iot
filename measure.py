@@ -27,7 +27,6 @@ def measure_hc(trigPin, echoPin):
 
     pulse_duration = pulse_end - pulse_start
     distance = pulse_duration * 17150
-    distance = round(distance, 2)
     return distance
 
 def main():
@@ -35,7 +34,7 @@ def main():
     distance1 = measure_hc(TRIG_1, ECHO_1)
     distance2 = measure_hc(TRIG_2, ECHO_2)
     GPIO.cleanup()
-    print("%.2f:%.2f" % (distance1, distance2))
+    print("%f:%f" % (distance1, distance2))
 
 if __name__ == "__main__":
     main()
