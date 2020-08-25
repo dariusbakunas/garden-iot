@@ -49,55 +49,52 @@ export const LiquidGauge: React.FC<ILiquidGauge> = ({ label, value, id , max, mi
   return (
     <div className="liquid-gauge">
       {label && <div>{label}:</div>}
-      {
-        value > 0 &&
-        <LiquidFillGauge
-          style={{ margin: '0 auto' }}
-          width={radius * 2}
-          height={radius * 2}
-          value={percent}
-          percent="%"
-          textSize={1.2}
-          textOffsetX={4}
-          textOffsetY={10}
-          textRenderer={(props: { value: number, height: number, width: number,  textSize: number, percent: number }) => {
-            const value = Math.round(props.value);
-            const radius = Math.min(props.height / 2, props.width / 2);
-            const textPixels = (props.textSize * radius / 2);
-            const valueStyle = {
-              fontSize: textPixels
-            };
-            const percentStyle = {
-              fontSize: textPixels * 0.6
-            };
+      <LiquidFillGauge
+        style={{ margin: '0 auto' }}
+        width={radius * 2}
+        height={radius * 2}
+        value={value > 0 ? percent : 0}
+        percent="%"
+        textSize={1.2}
+        textOffsetX={4}
+        textOffsetY={10}
+        textRenderer={(props: { value: number, height: number, width: number,  textSize: number, percent: number }) => {
+          const value = Math.round(props.value);
+          const radius = Math.min(props.height / 2, props.width / 2);
+          const textPixels = (props.textSize * radius / 2);
+          const valueStyle = {
+            fontSize: textPixels
+          };
+          const percentStyle = {
+            fontSize: textPixels * 0.6
+          };
 
-            return (
-              <tspan>
-                <tspan className="value" style={valueStyle}>{value}</tspan>
-                <tspan style={percentStyle}>{props.percent}</tspan>
-              </tspan>
-            );
-          }}
-          riseAnimation
-          waveAnimation
-          waveFrequency={1}
-          waveAmplitude={1.5}
-          gradient
-          gradientStops={gradientStops}
-          circleStyle={{
-            fill: fillColor
-          }}
-          waveStyle={{
-            fill: fillColor
-          }}
-          textStyle={{
-            fill: color('#fff')?.toString(),
-          }}
-          waveTextStyle={{
-            fill: color('#fff')?.toString(),
-          }}
-        />
-      }
+          return (
+            <tspan>
+              <tspan className="value" style={valueStyle}>{value}</tspan>
+              <tspan style={percentStyle}>{props.percent}</tspan>
+            </tspan>
+          );
+        }}
+        riseAnimation
+        waveAnimation
+        waveFrequency={1}
+        waveAmplitude={1.5}
+        gradient
+        gradientStops={gradientStops}
+        circleStyle={{
+          fill: fillColor
+        }}
+        waveStyle={{
+          fill: fillColor
+        }}
+        textStyle={{
+          fill: color('#fff')?.toString(),
+        }}
+        waveTextStyle={{
+          fill: color('#fff')?.toString(),
+        }}
+      />
     </div>
   )
 };

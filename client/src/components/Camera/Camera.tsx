@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-export const Camera: React.FC = () => {
+export const Camera: React.FC<{ url: string }> = ({ url }) => {
   return (
     <div>
-      <img src="http://localhost:8081" />
+      <img src={url} />
     </div>
   )
 };

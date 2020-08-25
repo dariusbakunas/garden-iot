@@ -24,7 +24,7 @@ function App() {
       </div>
       <div className="bx--row">
         <div className="bx--col camera-frame">
-          <Camera />
+          <Camera url="http://192.168.86.248:8081/" />
         </div>
         <div className="bx--col">
           <Toggle id="pump-toggle" checked={pumpOn} onToggle={handleTogglePump} labelText="Water Pump"/>
