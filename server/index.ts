@@ -8,7 +8,7 @@ import { spawn } from 'child_process';
 
 const SERVER_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const PUMP_PIN = 11;
-const NUM_AVG_POINTS = 3;
+const NUM_AVG_POINTS = 4;
 
 const simulation = process.env.SIMULATION === "true";
 

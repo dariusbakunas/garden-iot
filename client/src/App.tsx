@@ -29,7 +29,7 @@ function App() {
         <div className="bx--col">
           <Toggle id="pump-toggle" checked={pumpOn} onToggle={handleTogglePump} labelText="Water Pump"/>
           <div>
-            <LiquidGauge min={5} max={15} value={gardenLevel} label="Garden Level" id="garden-level" inverse={true}/>
+            <LiquidGauge min={5} max={14} value={gardenLevel} label="Garden Level" id="garden-level" inverse={true}/>
           </div>
           <div>
             <LiquidGauge min={0} max={100} value={reservoirLevel} label="Reservoir Level" id="reservoir-level" inverse={true}/>

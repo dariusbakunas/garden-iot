@@ -16,8 +16,8 @@ const { Provider } = IOContext;
 
 export const IOProvider: React.FC = ({ children }) => {
   const [pumpOn, setPumpOn] = useState(false);
-  const [gardenLevel, setGardenLevel] = useState<number>(0);
-  const [reservoirLevel, setReservoirLevel] = useState<number>(0);
+  const [gardenLevel, setGardenLevel] = useState<number>(-1);
+  const [reservoirLevel, setReservoirLevel] = useState<number>(-1);
 
   socket.on("pump-status", (payload: { status: 1 | 0 }) => {
     setPumpOn(payload.status === 1);
