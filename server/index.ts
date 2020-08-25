@@ -37,9 +37,10 @@ server.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", "http://localhost:8081"],
+      imgSrc: ["'self'", "http://localhost:8081", "http://192.168.86.248:8081"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      styleSrc: ["'self'", "'unsafe-inline'"]
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      connectSrc: ["'self'", "http://localhost:3001", "http://192.168.86.248:3001"]
     }
   }
 }));
@@ -68,7 +69,7 @@ const avg = (max: number) => {
   };
 };
 
-const expressSrv = server.listen(SERVER_PORT, (err) => {
+const expressSrv = server.listen(SERVER_PORT, "0.0.0.0", (err) => {
   if (err) throw err;
   console.log(`> Ready on http://localhost:${SERVER_PORT}`);
 });
@@ -78,10 +79,29 @@ const io = new SocketIO(expressSrv, { origins: ["*:*"]});
 const gardenAvg = avg(NUM_AVG_POINTS);
 const reservoirAvg = avg(NUM_AVG_POINTS);
 
+const turnOnReservoirPump = () => {
+  rpio.write(PUMP_PIN, rpio.HIGH);
+  io.emit("pump-status", { status: rpio.read(PUMP_PIN) });
+};
+
+const turnOffReservoirPump = () => {
+  rpio.write(PUMP_PIN, rpio.LOW);
+  io.emit("pump-status", { status: rpio.read(PUMP_PIN) });
+};
+
 setInterval(() => {
   getMeasurement((garden: number, reservoir: number) => {
-    io.emit("garden-level", gardenAvg(garden));
-    io.emit("reservoir-level", reservoirAvg(reservoir));
+    const reservoirLevel = reservoirAvg(reservoir);
+    const gardenLevel = gardenAvg(garden);
+
+    if (reservoirLevel <= 34.22) {
+      // reservoir level too low, shut off the pump
+      turnOffReservoirPump();
+      io.emit("reservoir-low");
+    }
+
+    io.emit("garden-level", gardenLevel);
+    io.emit("reservoir-level", reservoirLevel);
   });
 }, 5000);
 
@@ -92,13 +112,11 @@ io.on('connection', (socket) => {
   socket.emit("pump-status", { status: currentStatus });
 
   socket.on('turn-pump-on', () => {
-    rpio.write(PUMP_PIN, rpio.HIGH);
-    socket.emit("pump-status", { status: rpio.read(PUMP_PIN) });
+    turnOnReservoirPump();
   });
 
   socket.on('turn-pump-off', () => {
-    rpio.write(PUMP_PIN, rpio.LOW);
-    socket.emit("pump-status", { status: rpio.read(PUMP_PIN) });
+    turnOffReservoirPump();
   });
 
   socket.on('disconnect', () => {

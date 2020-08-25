@@ -24,15 +24,17 @@ function App() {
       </div>
       <div className="bx--row">
         <div className="bx--col camera-frame">
-          <Camera url="http://192.168.86.248:8081/" />
+          <Camera url={`http://${window.location.hostname}:8081/`} />
         </div>
         <div className="bx--col">
           <Toggle id="pump-toggle" checked={pumpOn} onToggle={handleTogglePump} labelText="Water Pump"/>
           <div>
+            {/* TODO: make min/max configurable */}
             <LiquidGauge min={5} max={14} value={gardenLevel} label="Garden Level" id="garden-level" inverse={true}/>
           </div>
           <div>
-            <LiquidGauge min={0} max={100} value={reservoirLevel} label="Reservoir Level" id="reservoir-level" inverse={true}/>
+            {/* Cutoff pump at 34.22 */}
+            <LiquidGauge min={5.3} max={38.15} value={reservoirLevel} label="Reservoir Level" id="reservoir-level" inverse={true}/>
           </div>
         </div>
       </div>

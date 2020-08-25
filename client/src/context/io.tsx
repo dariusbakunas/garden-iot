@@ -9,7 +9,7 @@ export interface IIOContext {
   reservoirLevel: number;
 }
 
-const socket = io("http://localhost:3001", { forceNew: true });
+const socket = io({ forceNew: true });
 
 export const IOContext = React.createContext<IIOContext | undefined>(undefined);
 const { Provider } = IOContext;

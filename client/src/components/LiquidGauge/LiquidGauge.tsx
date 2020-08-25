@@ -16,19 +16,20 @@ interface ILiquidGauge {
 export const LiquidGauge: React.FC<ILiquidGauge> = ({ label, value, id , max, min, inverse}) => {
   const percent = useMemo(() => {
     const normalizedValue = (value - min) / (max - min);
-    return inverse ? 100 - normalizedValue * 100 : normalizedValue * 100;
-  }, [value, inverse]);
+    const result = inverse ? 100 - normalizedValue * 100 : normalizedValue * 100;
+    return Math.min(Math.max(0, result), 100);
+  }, [value, inverse, min, max]);
 
   const radius = 50;
-  const startColor = '#00a8ed';
+  const startColor = '#ed1400';
   const endColor = '#0000dc';
   const interpolate = interpolateRgb(startColor, endColor);
-  const fillColor = interpolate(percent / 100);
+  const fillColor = interpolate(value > 0 ? percent / 100 : 0);
 
   const gradientStops = [
     {
       key: '0%',
-      stopColor: color(fillColor)?.darker(0.5).toString(),
+      stopColor: fillColor,
       stopOpacity: 1,
       offset: '0%'
     },
