@@ -1,3 +1,18 @@
 @import '~carbon-components/scss/globals/scss/colors';
 @import '~carbon-components/scss/globals/scss/layout';
 @import '~carbon-components/scss/globals/scss/spacing';
+
+@import 'components/LiquidGauge/LiquidGauge';
+
+.camera-frame {
+  flex-grow: 0!important;
+  min-width: 640px;
+}
+
+.bx--row {
+  margin-bottom: $layout-02;
+}
+
+.bx--col {
+  margin-right: $layout-02;
+}

@@ -10,11 +10,20 @@ const SERVER_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const PUMP_PIN = 11;
 const NUM_AVG_POINTS = 3;
 
-rpio.open(PUMP_PIN, rpio.OUTPUT, rpio.LOW);
+const simulation = process.env.SIMULATION === "true";
+
+if (!simulation) {
+  rpio.open(PUMP_PIN, rpio.OUTPUT, rpio.LOW);
+}
 
 const server = express();
 
 const getMeasurement = (callback: (garden: number, reservoir: number) => void) => {
+  if (simulation) {
+    callback(7.953, 140.14);
+    return;
+  }
+
   const python = spawn('python', ['measure.py']);
   python.stdout.on('data', function (data) {
     const [output1, output2] = data.toString().split(":");
