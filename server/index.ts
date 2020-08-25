@@ -38,7 +38,8 @@ server.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", "http://localhost:8081"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"]
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      styleSrc: ["'self'", "'unsafe-inline'"]
     }
   }
 }));
