@@ -94,11 +94,23 @@ setInterval(() => {
     const reservoirLevel = reservoirAvg(reservoir);
     const gardenLevel = gardenAvg(garden);
 
-    if (reservoirLevel <= 34.22) {
+    if (reservoirLevel >= 34.22) {
       // reservoir level too low, shut off the pump
-      turnOffReservoirPump();
+      if (rpio.read(PUMP_PIN)) {
+        turnOffReservoirPump();
+      }
       io.emit("reservoir-low");
     }
+
+    if (gardenLevel <= 4) {
+      // garden level too high, shut off the pump
+      if (rpio.read(PUMP_PIN)) {
+        turnOffReservoirPump();
+      }
+      io.emit("garden-high");
+    }
+
+    // garden low is 13.03
 
     io.emit("garden-level", gardenLevel);
     io.emit("reservoir-level", reservoirLevel);
