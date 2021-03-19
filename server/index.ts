@@ -39,7 +39,7 @@ server.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", CAMERA_URL],
+      imgSrc: ["'self'", "*"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       connectSrc: ["'self'", "http://localhost:3001", "http://192.168.86.248:3001"]

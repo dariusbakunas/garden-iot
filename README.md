@@ -59,7 +59,7 @@ sudo systemctl restart motion
 Create `.env` in project root:
 
 ```dotenv
-CAMERA_URL=http://[camera-hostname]:8081
+CAMERA_URL=http://[camera-hostname]:8081 # optional, if different hostname
 SERVER_HOST=0.0.0.0
 SIMULATION=true
 PUMP_PIN=11 # power relay pin that controls pump
