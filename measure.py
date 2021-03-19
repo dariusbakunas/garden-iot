@@ -1,11 +1,13 @@
 import RPi.GPIO as GPIO
 import time
 
-TRIG_1 = 16
-ECHO_1 = 18
+# Garden
+TRIG_1 = 36
+ECHO_1 = 38
 
-TRIG_2 = 13
-ECHO_2 = 15
+# Reservoir
+TRIG_2 = 7
+ECHO_2 = 11
 
 def measure_hc(trigPin, echoPin):
     GPIO.setup(trigPin, GPIO.OUT)
