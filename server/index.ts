@@ -7,7 +7,9 @@ import rpio from 'rpio';
 import { spawn } from 'child_process';
 
 const SERVER_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
-const PUMP_PIN = 11;
+const SERVER_HOST = process.env.SERVER_HOST || "localhost"
+const CAMERA_URL = process.env.CAMERA_URL || `http://${SERVER_HOST}:8081`
+const PUMP_PIN = process.env.PUMP_PIN ? parseInt(process.env.PUMP_PIN, 10) : 11;
 const NUM_AVG_POINTS = 4;
 
 const simulation = process.env.SIMULATION === "true";
@@ -37,7 +39,7 @@ server.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      imgSrc: ["'self'", "http://localhost:8081", "http://192.168.86.248:8081"],
+      imgSrc: ["'self'", CAMERA_URL],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       connectSrc: ["'self'", "http://localhost:3001", "http://192.168.86.248:3001"]
@@ -69,9 +71,9 @@ const avg = (max: number) => {
   };
 };
 
-const expressSrv = server.listen(SERVER_PORT, "0.0.0.0", (err) => {
+const expressSrv = server.listen(SERVER_PORT, SERVER_HOST, (err) => {
   if (err) throw err;
-  console.log(`> Ready on http://localhost:${SERVER_PORT}`);
+  console.log(`> Ready on http://${SERVER_HOST}:${SERVER_PORT}`);
 });
 
 const io = new SocketIO(expressSrv, { origins: ["*:*"]});
@@ -93,6 +95,10 @@ setInterval(() => {
   getMeasurement((garden: number, reservoir: number) => {
     const reservoirLevel = reservoirAvg(reservoir);
     const gardenLevel = gardenAvg(garden);
+
+    if (simulation) {
+      return;
+    }
 
     if (reservoirLevel >= 34.22) {
       // reservoir level too low, shut off the pump
@@ -120,8 +126,10 @@ setInterval(() => {
 io.on('connection', (socket) => {
   console.log('socket.io client connected');
 
-  const currentStatus = rpio.read(PUMP_PIN);
-  socket.emit("pump-status", { status: currentStatus });
+  if (!simulation) {
+    const currentStatus = rpio.read(PUMP_PIN);
+    socket.emit("pump-status", { status: currentStatus });
+  }
 
   socket.on('turn-pump-on', () => {
     turnOnReservoirPump();

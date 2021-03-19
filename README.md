@@ -53,3 +53,14 @@ sudo systemctl restart motion
 ```
 
 * Access it at `http://[hostname]:8081`
+
+### Environment
+
+Create `.env` in project root:
+
+```dotenv
+SERVER_HOST=0.0.0.0
+SIMULATION=true
+PUMP_PIN=11 # power relay pin that controls pump
+```
+
